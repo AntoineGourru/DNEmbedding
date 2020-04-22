@@ -18,9 +18,9 @@ python train.py
 
 ## Who
 
-You can cite our work using :
+The code was written in close collaboration with [Adrien Guille](http://mediamining.univ-lyon2.fr/people/guille/). You can cite our work using :
 
-### GELD
+#### GELD
 
 ```
 @inproceedings{gourru2020gaussian,
@@ -31,7 +31,7 @@ You can cite our work using :
 }
 ```
 
-### RLE
+#### RLE
 
 ```
 @inproceedings{gourru2020document,
