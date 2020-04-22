@@ -8,6 +8,10 @@ This repository contains code and dataset for the two following papers:
 
 -Gourru, A., Guille, A., Velcin, J., & Jacques, J. (2020, April). Document Network Projection in Pretrained Word Embedding Space. In European Conference on Information Retrieval (pp. 150-157). Springer, Cham.
 
+## Who
+
+The code was written in close collaboration with [Adrien Guille](http://mediamining.univ-lyon2.fr/people/guille/). 
+
 ## How
 
 The script classif.py allows to reproduce the result of our papers. Simply run:
@@ -16,9 +20,9 @@ The script classif.py allows to reproduce the result of our papers. Simply run:
 python train.py
 ```
 
-## Who
+## Citations
 
-The code was written in close collaboration with [Adrien Guille](http://mediamining.univ-lyon2.fr/people/guille/). You can cite our work using :
+You can cite our work using :
 
 #### GELD
 
