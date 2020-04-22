@@ -21,17 +21,19 @@ python train.py
 You can cite our work using :
 
 ### GELD
-'''
+
+```
 @inproceedings{gourru2020gaussian,
   title={Gaussian Embedding of Linked Documents from a Pretrained Semantic Space},
   author={Gourru, Antoine and Velcin, Julien and Jacques, Julien},
   booktitle={Proceedings of the 29th International Joint Conference on Artificial Intelligence},
   year={2020}
 }
-'''
+```
 
 ### RLE
-'''
+
+```
 @inproceedings{gourru2020document,
   title={Document Network Projection in Pretrained Word Embedding Space},
   author={Gourru, Antoine and Guille, Adrien and Velcin, Julien and Jacques, Julien},
@@ -40,4 +42,4 @@ You can cite our work using :
   year={2020},
   organization={Springer}
 }
-'''
+```
