@@ -3,7 +3,6 @@ import numpy as np
 import scipy as sp
 import networkx as nx
 
-import multiprocessing as mp
 import time
 import random
 from random import shuffle
@@ -27,31 +26,23 @@ def compute_M(A):
     A2 = A @ A
     return A + A2
 
-def _evaluate(param):
-    embeddings, labels, ratio, C, seed = param
-    d = embeddings.shape[1]
-    X_train, X_test, y_train, y_test = train_test_split(embeddings, labels, test_size=ratio, random_state=seed)
-    classifier = LinearSVC(penalty='l2', loss='squared_hinge', dual=False, tol=0.0001, C=C, multi_class='ovr', fit_intercept=True, class_weight=None, random_state=seed, max_iter=4000)
-    classifier.fit(X_train, y_train)
-    y_pred = []
-    for x in X_test:
-        x = x.reshape((1,d))
-        y_pred.append(classifier.predict(x))
-    y_pred = np.asarray(y_pred)
-    '''
-    y_pred = classifier.predict(X_test)
-    '''
-    return accuracy_score(y_test, y_pred)
-
-
 def evaluate(embeddings, labels, ratio, C, verbose=True):
-    runs = 4
-    #runs = multiprocessing.cpu_count()
-    #embeddings = StandardScaler().fit_transform(embeddings)
-    with mp.Pool(processes=runs) as pool:
-        scores = np.array(pool.map(_evaluate, [(embeddings, labels, ratio, C, seed) for seed in range(runs)])) * 100
-    accuracy_mean = scores.mean()
-    accuracy_std = scores.std()
+    d = embeddings.shape[1]
+    scores = []
+    for i in range(10):
+        X_train, X_test, y_train, y_test = train_test_split(embeddings, labels, test_size=ratio, random_state=i)
+        classifier = LinearSVC(penalty='l2', loss='squared_hinge', dual=False, tol=0.0001, C=C, multi_class='ovr', fit_intercept=True, class_weight=None, random_state=i, max_iter=4000)
+        classifier.fit(X_train, y_train)
+        y_pred = []
+        for x in X_test:
+            x = x.reshape((1,d))
+            y_pred.append(classifier.predict(x))
+        y_pred = np.asarray(y_pred)
+        scores.append(accuracy_score(y_test, y_pred)*100)
+
+    accuracy_mean = np.mean(scores)
+    accuracy_std = np.std(scores)
+   
     if verbose:
         print('Accuracy (%.1f): %.3f (std: %.3f)' % (ratio, accuracy_mean, accuracy_std))
     return accuracy_mean, accuracy_std

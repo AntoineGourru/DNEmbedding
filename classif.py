@@ -19,8 +19,8 @@ from gensim.models import Word2Vec
 from models import train_rle,train_w2v,train_geld,prepare_data
 
 ratios = 0.5
-methods = ["RLE"]  #"GELD"
-dataset= "nyt"
+methods = ["RLE","GELD"]#"RLE","GELD"
+dataset= "cora2"
 d = 160
 
 print("\nLoading %s..." % dataset)
@@ -63,19 +63,19 @@ ratios = [0.9,0.5]
 results = pd.DataFrame(ratios, columns=["ratio"])
 for method in methods:
     optimal_C = find_optimal_C(embeddings[method], groups)
-    print(optimal_C)
     results[method] = results["ratio"].apply(lambda ratio: evaluate(embeddings[method], 
                                                                     groups, 
                                                                     ratio, 
                                                                     C=optimal_C, 
                                                                     verbose=False))
-                                      
-results2 = pd.DataFrame(ratios, columns=["ratio"])
-         
-for method in methods:
-    print(method+"%.1f",results[method].tolist()[0])
-    results2[[method+"_accuracy_mean", method+"_accuracy_std"]] = pd.DataFrame(results[method].tolist(), index=results.index)
 
+
+results2 = pd.DataFrame(ratios, columns=["ratio"])
+ 
+for method in methods:
+    #print(method+"%.1f",results[method].tolist()[0])
+    results2[[method+"_accuracy_mean", method+"_accuracy_std"]] = pd.DataFrame(results[method].tolist(), index=results.index)
+print(results2) 
 
 results2.to_csv(dataset+"_classification.csv")
 
