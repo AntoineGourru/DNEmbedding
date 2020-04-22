@@ -18,11 +18,9 @@ from gensim.models import Word2Vec
 
 from models import train_rle,train_w2v,train_geld,prepare_data
 
-
-
 ratios = 0.5
-methods = ["RLE","BDNE"]  
-dataset= "cora2"
+methods = ["RLE"]  #"GELD"
+dataset= "nyt"
 d = 160
 
 print("\nLoading %s..." % dataset)
@@ -53,29 +51,31 @@ if "GELD" in methods:
     
 if "RLE" in methods:
     optimal_window = {"cora2": 15, "dblp": 5,"nyt":10}
-    optimal_ns = {"cora2": 5, "dblp": 5,"nyt":5}
-    embeddings["RLE"], _ = train_rle(A,tf,d,0.7,raw,voc,optimal_window[dataset],optimal_ns[dataset],verbose=True)
+    embeddings["RLE"], _ = train_rle(A,tf,U,d,0.7,verbose=True)
+
 
 # ------------------------------------------------------------------------------
 # Train and evaluate the logistic regression for test/train ratios in [0.5, 0.9]
 # ------------------------------------------------------------------------------
+
 print("\nEvaluating embeddings...")
-
-
+ratios = [0.9,0.5]
+results = pd.DataFrame(ratios, columns=["ratio"])
 for method in methods:
     optimal_C = find_optimal_C(embeddings[method], groups)
-    results[method][compt] = evaluate(embeddings[method],
-                                      groups,
-                                      0.5,
-                                      C=optimal_C,
-                                      verbose=False)[0]
+    print(optimal_C)
+    results[method] = results["ratio"].apply(lambda ratio: evaluate(embeddings[method], 
+                                                                    groups, 
+                                                                    ratio, 
+                                                                    C=optimal_C, 
+                                                                    verbose=False))
+                                      
 results2 = pd.DataFrame(ratios, columns=["ratio"])
          
 for method in methods:
-    #print(method+"%.1f",results[method].tolist()[0])
+    print(method+"%.1f",results[method].tolist()[0])
     results2[[method+"_accuracy_mean", method+"_accuracy_std"]] = pd.DataFrame(results[method].tolist(), index=results.index)
 
-print(results2) 
 
 results2.to_csv(dataset+"_classification.csv")
 

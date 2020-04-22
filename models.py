@@ -15,19 +15,14 @@ from sklearn.preprocessing import normalize
 
 from gensim.models import Word2Vec
 
-def train_rle(A,T,d, lamb,raw,voc,window,negative,verbose=True):
+from utils import compute_M
+
+import time
+
+def train_rle(A,T,U,d,lamb,verbose=True):
     if verbose:
         print('RLE - d=%d' % d)
         
-    #voc = [*voc]
-    
-    w2v = Word2Vec(raw,size=d,window = window,min_count=1,iter = 200,negative = negative)
-    
-    U = np.zeros((len(voc), d))
-    for i in range(len(voc)):
-        U[i,:] = w2v[voc[i]]        
-    
-    #G = normalize(adj, norm='l1', axis=1) 
     start = time.time()
     
     G = sp.sparse.csr_matrix(normalize(compute_M(A), norm='l1', axis=1), dtype=np.float32)

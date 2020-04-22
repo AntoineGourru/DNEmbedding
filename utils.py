@@ -22,6 +22,11 @@ from nltk.tokenize import RegexpTokenizer
 #__email__ = "adrien.guille@univ-lyon2.fr, antoine.gourru@univ-lyon2.fr"
 
 
+def compute_M(A):
+    A = sp.sparse.csr_matrix(normalize(A, norm='l1', axis=1), dtype=np.float32)
+    A2 = A @ A
+    return A + A2
+
 def _evaluate(param):
     embeddings, labels, ratio, C, seed = param
     d = embeddings.shape[1]
@@ -40,9 +45,10 @@ def _evaluate(param):
 
 
 def evaluate(embeddings, labels, ratio, C, verbose=True):
-    runs = 10
+    runs = 4
+    #runs = multiprocessing.cpu_count()
     #embeddings = StandardScaler().fit_transform(embeddings)
-    with mp.Pool(processes=10) as pool:
+    with mp.Pool(processes=runs) as pool:
         scores = np.array(pool.map(_evaluate, [(embeddings, labels, ratio, C, seed) for seed in range(runs)])) * 100
     accuracy_mean = scores.mean()
     accuracy_std = scores.std()
