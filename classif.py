@@ -55,7 +55,7 @@ if "RLE" in methods:
 
 
 # ------------------------------------------------------------------------------
-# Train and evaluate the logistic regression for test/train ratios in [0.5, 0.9]
+# Train and evaluate the SVM for test/train ratios in [0.5, 0.9]
 # ------------------------------------------------------------------------------
 
 print("\nEvaluating embeddings...")
@@ -75,7 +75,7 @@ results2 = pd.DataFrame(ratios, columns=["ratio"])
 for method in methods:
     #print(method+"%.1f",results[method].tolist()[0])
     results2[[method+"_accuracy_mean", method+"_accuracy_std"]] = pd.DataFrame(results[method].tolist(), index=results.index)
-print(results2) 
+print(results2.T) 
 
 results2.to_csv(dataset+"_classification.csv")
 

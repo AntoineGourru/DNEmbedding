@@ -91,7 +91,11 @@ def prepare_data(d,tf,A,voc,raw,window=15,negative=5):
     
     return data_graph,data_text,sigma,D,U
     
-def train_geld(d,data_graph,data_text,U,D_init,sigma_init,n_epoch=20,lamb=None,alpha=0.99,groups = None, test = False):
+def train_geld(d,data_graph,data_text,U,D_init,sigma_init,n_epoch=20,lamb=None,alpha=0.99,groups = None, test = False,verbose=True):
+    
+    if verbose:
+        print('GELD - d=%d' % d)
+    start = time.time()
     
     if lamb == None:
         lamb = np.power(range(1,n_epoch+1),-0.2)*0.1
@@ -165,5 +169,9 @@ def train_geld(d,data_graph,data_text,U,D_init,sigma_init,n_epoch=20,lamb=None,a
             print(evaluate(D_norm,groups,0.5,C=optimal_C,verbose=False)[0])
             
     D_norm = normalize(D, axis=1)
+    
+    training_time = time.time() - start
+    if verbose:
+        print('Training time: %.1f' % training_time)
        
     return D,D_norm,sigma
