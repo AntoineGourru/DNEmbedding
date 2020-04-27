@@ -1,5 +1,7 @@
 # Linked Document Embedding using pretrained word vectors
 
+![Document Embedding in Pretrained Word Vectors Space](http://antoinegourru.com/pizza.png)
+
 ## What
 
 This repository contains code and dataset for the two following papers:
