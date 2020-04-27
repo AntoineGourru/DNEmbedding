@@ -17,7 +17,7 @@ The code was written in close collaboration with [Adrien Guille](http://mediamin
 The script classif.py allows to reproduce the result of our papers. Simply run:
 
 ```bash
-python train.py
+python classif.py
 ```
 
 ## Citations
